@@ -1,0 +1,9 @@
+namespace: athlefi-dev
+
+resources:
+  - ../../base
+
+configMapGenerator:
+  - name: krakend-config
+    files:
+      - ../../base/config/krakend.json
