@@ -52,10 +52,16 @@ spec:
           args: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
           volumeMounts:
             - name: krakend-config-volume
-              mountPath: /etc/krakend/krakend.json
-              subPath: krakend.json
+              mountPath: /etc/krakend
       volumes:
         - name: krakend-config-volume
           configMap:
