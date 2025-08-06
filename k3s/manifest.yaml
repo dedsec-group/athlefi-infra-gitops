@@ -84,7 +84,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   rules:
-    - host: krakend.internal.mx-central-1.sparkfly.cloud
+    - host: gateway.athlefi.internal.mx-central-1.sparkfly.cloud
       http:
         paths:
           - path: /
