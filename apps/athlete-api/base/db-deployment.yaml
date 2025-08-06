@@ -22,6 +22,8 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "200m"
+          ports:
+            - containerPort: 5432
           env:
             - name: POSTGRES_USER
               value: postgres
@@ -29,11 +31,10 @@ spec:
               value: postgres
             - name: POSTGRES_DB
               value: athlete_db
-          ports:
-            - containerPort: 5432
           volumeMounts:
-            - name: db-data
+            - name: postgres-storage
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: db-data
-          emptyDir: {} # usa PVC si necesitas persistencia real
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc

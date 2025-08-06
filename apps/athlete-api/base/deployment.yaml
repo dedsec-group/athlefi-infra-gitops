@@ -12,9 +12,11 @@ spec:
       labels:
         app: athlete-api
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: athlete-api
-          image: registry.sparkfly.cloud/athlefi/athlete-api:local-latest
+          image: registry.sparkfly.cloud/athlefi/athlete-api:latest
           ports:
             - containerPort: 8000
           resources:
