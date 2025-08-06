@@ -14,6 +14,7 @@ spec:
     spec:
       imagePullSecrets:
         - name: regcred
+      imagePullPolicy: Always
       containers:
         - name: athlete-api
           image: registry.sparkfly.cloud/athlefi/athlete-api:latest
