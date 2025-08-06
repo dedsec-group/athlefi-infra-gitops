@@ -48,4 +48,4 @@ spec:
       volumes:
         - name: db-storage
           persistentVolumeClaim:
-            claimName: athlete-db-pvc
+            claimName: athlete-db

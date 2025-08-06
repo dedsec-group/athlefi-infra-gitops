@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: athlete-db-pvc
+  name: athlete-db
 spec:
   accessModes:
     - ReadWriteOnce
