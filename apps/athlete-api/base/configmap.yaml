@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: athlete-config
 data:
-  DB_HOST: db
+  DB_HOST: athlete-db
   DB_PORT: "5432"
   DB_NAME: athlete_db
   DB_USER: postgres
