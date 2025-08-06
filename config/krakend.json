@@ -1,0 +1,91 @@
+{
+  "$schema": "https://www.krakend.io/schema/krakend.json",
+  "version": 3,
+  "name": "KrakenD - API Gateway",
+  "extra_config": {
+    "telemetry/metrics": {
+      "collection_time": "60s",
+      "proxy_disabled": false,
+      "router_disabled": false,
+      "backend_disabled": false,
+      "endpoint_disabled": false,
+      "listen_address": ":8090"
+    },
+    "security/cors": {
+      "allow_origins": ["*"],
+      "allow_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allow_headers": ["Origin", "Authorization", "Content-Type"],
+      "expose_headers": ["Content-Length"],
+      "max_age": "12h"
+    }
+  },
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "endpoints": [
+    {
+      "endpoint": "/v1/athletes",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/athletes",
+          "host": [
+            "https://athlete-api.athlefi.us-east-1.dedsec.com.mx"
+          ],
+          "is_collection": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/v1/athletes/{athlete_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/athletes/{athlete_id}",
+          "host": [
+            "https://athlete-api.athlefi.us-east-1.dedsec.com.mx"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/v1/athlete-svc-health",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/health",
+          "host": [
+            "https://athlete-api.athlefi.us-east-1.dedsec.com.mx"
+          ]
+        }
+      ],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "https://clerk.athlefi.dedsec.com.mx/.well-known/jwks.json",
+          "issuer": "https://clerk.athlefi.dedsec.com.mx"
+        }
+      }
+    },
+    {
+      "endpoint": "/v1/private/athletes",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/athletes",
+          "host": [
+            "https://athlete-api.athlefi.us-east-1.dedsec.com.mx"
+          ],
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "https://clerk.athlefi.dedsec.com.mx/.well-known/jwks.json",
+          "issuer": "https://clerk.athlefi.dedsec.com.mx"
+        }
+      }
+    }
+  ]
+}

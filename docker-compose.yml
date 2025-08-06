@@ -1,0 +1,9 @@
+services:
+  krakend:
+    image: krakend:2.10.2
+    container_name: krakend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/etc/krakend
+    command: ["run", "--config", "/etc/krakend/krakend.json"]
