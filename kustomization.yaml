@@ -9,5 +9,5 @@ resources:
 configMapGenerator:
   - name: krakend-config
     files:
-      - ../config/krakend.json
+      - ./config/krakend.json
     behavior: replace
