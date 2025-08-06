@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   rules:
-    - host: gateway.athlefi.us-east-1.dedsec.com.mx
+    - host: gateway-dev.athlefi.us-east-1.dedsec.com.mx
       http:
         paths:
           - path: /
@@ -20,4 +20,4 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - gateway.athlefi.us-east-1.dedsec.com.mx
+        - gateway-dev.athlefi.us-east-1.dedsec.com.mx
