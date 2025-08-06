@@ -6,4 +6,4 @@ resources:
 configMapGenerator:
   - name: krakend-config
     files:
-      - ../../base/config/krakend.json
+      - config/krakend.json
