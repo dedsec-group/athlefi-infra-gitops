@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: krakend
-          image: devopsfaith/krakend:2.5
+          image: krakend:2.10.2
           args: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
           ports:
             - containerPort: 8080
