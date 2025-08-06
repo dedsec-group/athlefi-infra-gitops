@@ -5,3 +5,9 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+
+configMapGenerator:
+  - name: krakend-config
+    files:
+      - ./config/krakend.json
+    behavior: replace
