@@ -1,0 +1,13 @@
+namespace: athlefi-dev
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+configMapGenerator:
+  - name: krakend-config
+    files:
+      - ../config/krakend.json
+    behavior: replace
