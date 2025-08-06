@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: athlete-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: athlete-api
+  template:
+    metadata:
+      labels:
+        app: athlete-api
+    spec:
+      containers:
+        - name: athlete-api
+          image: registry.sparkfly.cloud/athlefi/athlete-api:local-latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          envFrom:
+            - configMapRef:
+                name: athlete-config
+            - secretRef:
+                name: athlete-secret

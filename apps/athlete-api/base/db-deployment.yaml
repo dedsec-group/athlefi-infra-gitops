@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: athlete-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: athlete-db
+  template:
+    metadata:
+      labels:
+        app: athlete-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_DB
+              value: athlete_db
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          emptyDir: {} # usa PVC si necesitas persistencia real
