@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: athlete-db
+  name: athlete-db-service
 spec:
   selector:
     app: athlete-db
