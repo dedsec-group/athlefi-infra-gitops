@@ -32,9 +32,9 @@ spec:
             - name: POSTGRES_DB
               value: athlete_db
           volumeMounts:
-            - name: postgres-storage
+            - name: db-storage
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: postgres-storage
+        - name: db-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: db-pvc
