@@ -26,11 +26,20 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: athlete-secret
+                  key: DB_PASSWORD
             - name: POSTGRES_PASSWORD
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: athlete-secret
+                  key: DB_PASSWORD
             - name: POSTGRES_DB
-              value: athlete_db
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_NAME
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
           volumeMounts:
