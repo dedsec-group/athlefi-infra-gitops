@@ -27,9 +27,9 @@ spec:
           env:
             - name: POSTGRES_USER
               valueFrom:
-                secretKeyRef:
-                  name: athlete-secret
-                  key: DB_PASSWORD
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

@@ -26,8 +26,29 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
-          envFrom:
-            - configMapRef:
-                name: athlete-config
-            - secretRef:
-                name: athlete-secret
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: athlete-secret
+                  key: DB_PASSWORD
