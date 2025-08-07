@@ -75,7 +75,7 @@ spec:
                   name: athlete-db-config
                   key: DB_NAME
             - name: PGDATA
-              value: /var/lib/postgresql/data
+              value: /var/lib/postgresql/data/pgdata
           volumeMounts:
             - name: db-storage
               mountPath: /var/lib/postgresql/data
