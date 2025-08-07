@@ -1,7 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: krakend-ingress
+  name: krakend-gateway
+  labels:
+    app.kubernetes.io/name: krakend-gateway
+    app.kubernetes.io/instance: krakend-gateway
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/part-of: athlefi
+    app.kubernetes.io/managed-by: kustomize
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
@@ -14,7 +20,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: krakend
+                name: krakend-gateway
                 port:
                   number: 80
   tls:

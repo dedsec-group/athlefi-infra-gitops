@@ -1,4 +1,4 @@
 resources:
-  - deployment.yaml
-  - service.yaml
-  - ingress.yaml
+  - krakend-deployment.yaml
+  - krakend-service.yaml
+  - krakend-ingress.yaml

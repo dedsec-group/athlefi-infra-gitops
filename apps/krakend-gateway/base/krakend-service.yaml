@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: krakend-gateway
+  labels:
+    app.kubernetes.io/name: krakend-gateway
+    app.kubernetes.io/instance: krakend-gateway
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/part-of: athlefi
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  selector:
+    app.kubernetes.io/name: krakend-gateway
+    app.kubernetes.io/instance: krakend-gateway
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+      protocol: TCP
+  type: ClusterIP
