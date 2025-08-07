@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: athlete-api
+  labels:
+    app.kubernetes.io/name: athlete-api
+    app.kubernetes.io/instance: athlete-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: athlefi
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  selector:
+    app.kubernetes.io/name: athlete-api
+    app.kubernetes.io/instance: athlete-service
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+      protocol: TCP

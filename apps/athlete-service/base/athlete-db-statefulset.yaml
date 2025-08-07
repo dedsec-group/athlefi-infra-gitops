@@ -2,16 +2,27 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: athlete-db
+  labels:
+    app.kubernetes.io/name: athlete-db
+    app.kubernetes.io/instance: athlete-service
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: athlefi
+    app.kubernetes.io/managed-by: kustomize
 spec:
   serviceName: athlete-db
   replicas: 1
   selector:
     matchLabels:
-      app: athlete-db
+      app.kubernetes.io/name: athlete-db
+      app.kubernetes.io/instance: athlete-service
   template:
     metadata:
       labels:
-        app: athlete-db
+        app.kubernetes.io/name: athlete-db
+        app.kubernetes.io/instance: athlete-service
+        app.kubernetes.io/component: database
+        app.kubernetes.io/part-of: athlefi
+        app.kubernetes.io/managed-by: kustomize
     spec:
       containers:
         - name: postgres
@@ -25,21 +36,23 @@ spec:
               cpu: "200m"
           ports:
             - containerPort: 5432
+              name: postgresql
+              protocol: TCP
           env:
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
-                  name: athlete-config
+                  name: athlete-db-config
                   key: DB_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: athlete-secret
+                  name: athlete-db-secret
                   key: DB_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: athlete-config
+                  name: athlete-db-config
                   key: DB_NAME
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
@@ -85,7 +98,7 @@ spec:
       volumes:
         - name: postgres-config
           configMap:
-            name: postgres-config
+            name: athlete-db-postgres-config
   volumeClaimTemplates:
     - metadata:
         name: db-storage

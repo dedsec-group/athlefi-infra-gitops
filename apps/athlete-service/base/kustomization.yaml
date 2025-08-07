@@ -1,8 +1,8 @@
 resources:
-  - configmap.yaml
-  - secret.yaml
-  - postgres-config.yaml
-  - db-statefulset.yaml
-  - db-service.yaml
-  - deployment.yaml
-  - service.yaml
+  - athlete-db-configmap.yaml
+  - athlete-db-secret.yaml
+  - athlete-db-postgres-config.yaml
+  - athlete-db-statefulset.yaml
+  - athlete-db-service.yaml
+  - athlete-api-deployment.yaml
+  - athlete-api-service.yaml
