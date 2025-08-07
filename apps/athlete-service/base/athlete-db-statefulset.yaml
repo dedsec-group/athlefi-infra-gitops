@@ -24,9 +24,40 @@ spec:
         app.kubernetes.io/part-of: athlefi
         app.kubernetes.io/managed-by: kustomize
     spec:
+      securityContext:
+        fsGroup: 999
+        runAsUser: 999
+        runAsGroup: 999
+      initContainers:
+        - name: init-db
+          image: postgres:17
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              mkdir -p /var/lib/postgresql/data
+              chown -R 999:999 /var/lib/postgresql/data
+              mkdir -p /var/run/postgresql
+              chown -R 999:999 /var/run/postgresql
+              chmod 777 /var/run/postgresql
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/postgresql/data
       containers:
         - name: postgres
           image: postgres:17
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               memory: "256Mi"
