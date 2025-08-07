@@ -2,8 +2,7 @@ resources:
   - configmap.yaml
   - secret.yaml
   - postgres-config.yaml
-  - db-pvc.yaml
-  - db-deployment.yaml
+  - db-statefulset.yaml
   - db-service.yaml
   - deployment.yaml
   - service.yaml

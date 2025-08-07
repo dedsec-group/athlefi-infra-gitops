@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: athlete-db
 spec:
+  serviceName: athlete-db
   replicas: 1
   selector:
     matchLabels:
@@ -82,9 +83,14 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 3
       volumes:
-        - name: db-storage
-          persistentVolumeClaim:
-            claimName: athlete-db
         - name: postgres-config
           configMap:
             name: postgres-config
+  volumeClaimTemplates:
+    - metadata:
+        name: db-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
