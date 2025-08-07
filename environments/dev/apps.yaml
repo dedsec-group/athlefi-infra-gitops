@@ -22,14 +22,14 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: athlete-api-dev
+  name: athlete-service-dev
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/dedsec-group/athlefi-infra-gitops
     targetRevision: HEAD
-    path: apps/athlete-api/overlays/dev
+    path: apps/athlete-service/overlays/dev
   destination:
     server: https://kubernetes.default.svc
     namespace: athlefi-dev
