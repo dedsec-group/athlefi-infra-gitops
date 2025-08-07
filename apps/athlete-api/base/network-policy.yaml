@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: athlete-api-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: athlete-api
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: athlete-db
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: athlete-db-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: athlete-db
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: athlete-api
+      ports:
+        - protocol: TCP
+          port: 5432

@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: athlete-db-init
+spec:
+  template:
+    spec:
+      containers:
+        - name: db-init
+          image: postgres:17
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Waiting for database to be ready..."
+              until pg_isready -h athlete-db -p 5432 -U postgres; do
+                echo "Database is not ready yet. Waiting..."
+                sleep 2
+              done
+              echo "Database is ready!"
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: athlete-secret
+                  key: DB_PASSWORD
+      restartPolicy: Never
+  backoffLimit: 10
