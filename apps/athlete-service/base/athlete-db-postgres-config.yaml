@@ -35,10 +35,6 @@ data:
     random_page_cost = 1.1
     effective_io_concurrency = 200
 
-    # Security settings for non-root execution
-    unix_socket_directories = '/var/run/postgresql'
-    unix_socket_permissions = 0777
-
   pg_hba.conf: |
     # TYPE  DATABASE        USER            ADDRESS                 METHOD
     local   all             all                                     trust
