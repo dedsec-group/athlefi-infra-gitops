@@ -109,20 +109,6 @@ spec:
             - name: db-storage
               mountPath: /var/lib/postgresql/data
               subPath: ""
-            - name: postgres-config
-              mountPath: /etc/postgresql/postgresql.conf
-              subPath: postgresql.conf
-              readOnly: true
-            - name: postgres-config
-              mountPath: /etc/postgresql/pg_hba.conf
-              subPath: pg_hba.conf
-              readOnly: true
-          command:
-            - postgres
-            - -c
-            - config_file=/etc/postgresql/postgresql.conf
-            - -c
-            - hba_file=/etc/postgresql/pg_hba.conf
           # Health checks
           readinessProbe:
             exec:
@@ -164,12 +150,6 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 30
             successThreshold: 1
-      # Volumes
-      volumes:
-        - name: postgres-config
-          configMap:
-            name: athlete-db-postgres-config
-            defaultMode: 0644
   # Persistent volume claim template
   volumeClaimTemplates:
     - metadata:
