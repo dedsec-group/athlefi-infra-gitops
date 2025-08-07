@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: athlete-db
     app.kubernetes.io/instance: athlete-service
+    app.kubernetes.io/version: "17"
     app.kubernetes.io/component: database
     app.kubernetes.io/part-of: athlefi
     app.kubernetes.io/managed-by: kustomize
@@ -20,27 +21,73 @@ spec:
       labels:
         app.kubernetes.io/name: athlete-db
         app.kubernetes.io/instance: athlete-service
+        app.kubernetes.io/version: "17"
         app.kubernetes.io/component: database
         app.kubernetes.io/part-of: athlefi
         app.kubernetes.io/managed-by: kustomize
     spec:
+      # Security context at pod level
       securityContext:
         fsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        supplementalGroups: [999]
+      # Init container to set up database
       initContainers:
-        - name: init-db-permissions
-          image: busybox:1.35
+        - name: init-db
+          image: postgres:17
           securityContext:
             runAsUser: 0
             runAsGroup: 0
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - |
-              chown -R 999:999 /var/lib/postgresql/data
-              chmod 700 /var/lib/postgresql/data
+              set -e
+              echo "Checking database initialization..."
+
+              # Check if database is already initialized
+              if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+                echo "Initializing PostgreSQL database..."
+                # Set up permissions
+                chown -R 999:999 /var/lib/postgresql/data
+                chmod 700 /var/lib/postgresql/data
+                # Initialize database as postgres user
+                su postgres -c "initdb -D /var/lib/postgresql/data"
+                echo "Database initialization completed."
+              else
+                echo "Database already initialized, setting permissions only..."
+                chown -R 999:999 /var/lib/postgresql/data
+                chmod 700 /var/lib/postgresql/data
+              fi
+
+              echo "Database setup completed successfully."
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-db-config
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: athlete-db-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: athlete-db-config
+                  key: DB_NAME
           volumeMounts:
             - name: db-storage
               mountPath: /var/lib/postgresql/data
+      # Main PostgreSQL container
       containers:
         - name: postgres
           image: postgres:17
@@ -52,6 +99,8 @@ spec:
             capabilities:
               drop:
                 - ALL
+            seccompProfile:
+              type: RuntimeDefault
           resources:
             requests:
               memory: "256Mi"
@@ -79,21 +128,27 @@ spec:
                 configMapKeyRef:
                   name: athlete-db-config
                   key: DB_NAME
+            - name: PGDATA
+              value: /var/lib/postgresql/data
           volumeMounts:
             - name: db-storage
               mountPath: /var/lib/postgresql/data
+              subPath: ""
             - name: postgres-config
               mountPath: /etc/postgresql/postgresql.conf
               subPath: postgresql.conf
+              readOnly: true
             - name: postgres-config
               mountPath: /etc/postgresql/pg_hba.conf
               subPath: pg_hba.conf
+              readOnly: true
           command:
             - postgres
             - -c
             - config_file=/etc/postgresql/postgresql.conf
             - -c
             - hba_file=/etc/postgresql/pg_hba.conf
+          # Health checks
           readinessProbe:
             exec:
               command:
@@ -106,6 +161,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
+            successThreshold: 1
           livenessProbe:
             exec:
               command:
@@ -118,13 +174,35 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 3
             failureThreshold: 3
+            successThreshold: 1
+          # Startup probe for slow initialization
+          startupProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+                - -d
+                - athlete_db
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 30
+            successThreshold: 1
+      # Volumes
       volumes:
         - name: postgres-config
           configMap:
             name: athlete-db-postgres-config
+            defaultMode: 0644
+  # Persistent volume claim template
   volumeClaimTemplates:
     - metadata:
         name: db-storage
+        labels:
+          app.kubernetes.io/name: athlete-db
+          app.kubernetes.io/instance: athlete-service
+          app.kubernetes.io/component: database
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
