@@ -33,10 +33,15 @@ database-tools/
 - **Recursos**: 128Mi-256Mi RAM, 50m-100m CPU
 
 ### Configuración de Seguridad
-- **Usuario**: UID 5050 (usuario no privilegiado)
-- **Capabilities**: Drop ALL
-- **Seccomp**: RuntimeDefault
+- **Usuario**: UID 0 (root) - Requerido por pgAdmin
+- **AllowPrivilegeEscalation**: true
 - **ReadOnly RootFS**: false (necesario para pgAdmin)
+
+**⚠️ Nota de Seguridad**: pgAdmin requiere ejecutarse como root debido a limitaciones de la imagen oficial. En entornos de producción, considerar:
+- Usar Network Policies para restringir acceso
+- Implementar autenticación adicional
+- Monitorear logs de acceso
+- Usar solo en redes internas
 
 ### Variables de Entorno
 - `PGADMIN_DEFAULT_EMAIL`: Email de administrador
@@ -120,9 +125,17 @@ kubectl get pods -l app.kubernetes.io/name=pgadmin -n athlefi-dev
 3. **Configurar Network Policies** para restringir acceso
 4. **Auditar logs** regularmente
 5. **Rotar credenciales** periódicamente
+6. **Limitar acceso** solo a usuarios autorizados
+7. **Usar VPN** para acceso remoto en producción
 
 ### Network Policies
 Considerar agregar Network Policies para restringir el acceso solo a usuarios autorizados.
+
+### Alternativas de Seguridad
+- **pgAdmin en modo servidor**: Sin master password
+- **Autenticación externa**: Integrar con LDAP/OAuth
+- **Acceso solo interno**: Sin exposición externa
+- **Logs de auditoría**: Monitorear todos los accesos
 
 ## Troubleshooting
 
@@ -134,4 +147,10 @@ kubectl describe pod -l app.kubernetes.io/name=pgadmin -n athlefi-dev
 ### No puede conectar a la base de datos
 1. Verificar que `athlete-db` esté corriendo
 2. Verificar conectividad de red
-3. Verificar credenciales en `pgadmin-servers-config` 
+3. Verificar credenciales en `pgadmin-servers-config`
+
+### Errores de permisos
+pgAdmin requiere ejecutarse como root. Si hay errores de permisos:
+1. Verificar que `runAsUser: 0` esté configurado
+2. Verificar que `allowPrivilegeEscalation: true`
+3. Verificar que no hay políticas de seguridad restrictivas 
