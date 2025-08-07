@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgadmin-config
+  labels:
+    app.kubernetes.io/name: pgadmin
+    app.kubernetes.io/instance: database-tools
+    app.kubernetes.io/component: database-admin
+    app.kubernetes.io/part-of: athlefi
+    app.kubernetes.io/managed-by: kustomize
+data:
+  PGADMIN_DEFAULT_EMAIL: admin@athlefi.local

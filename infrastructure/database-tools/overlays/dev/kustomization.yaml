@@ -1,0 +1,4 @@
+namespace: athlefi-dev
+
+resources:
+  - ../../base
