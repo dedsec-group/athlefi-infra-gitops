@@ -33,6 +33,35 @@ spec:
         runAsUser: 999
         runAsGroup: 999
         supplementalGroups: [999]
+      # Init container to set up directory structure
+      initContainers:
+        - name: init-db-dirs
+          image: busybox:1.35
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              echo "Setting up PostgreSQL data directory..."
+
+              # Create the pgdata directory if it doesn't exist
+              mkdir -p /var/lib/postgresql/data/pgdata
+
+              # Set proper permissions
+              chmod 700 /var/lib/postgresql/data/pgdata
+
+              echo "PostgreSQL data directory setup completed."
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/postgresql/data
       # Main PostgreSQL container
       containers:
         - name: postgres
