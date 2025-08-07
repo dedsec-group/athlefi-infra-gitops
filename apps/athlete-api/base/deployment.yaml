@@ -17,7 +17,7 @@ spec:
       imagePullPolicy: Always
       containers:
         - name: athlete-api
-          image: registry.sparkfly.cloud/athlefi/athlete-api:latest
+          image: registry.sparkfly.cloud/athlefi/athlete-api:v11
           ports:
             - containerPort: 8000
           resources:
