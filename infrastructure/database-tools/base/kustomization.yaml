@@ -4,3 +4,4 @@ resources:
   - pgadmin-configmap.yaml
   - pgadmin-secret.yaml
   - pgadmin-servers-config.yaml
+  - pgadmin-ingress.yaml
