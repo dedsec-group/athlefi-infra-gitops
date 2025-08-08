@@ -13,7 +13,7 @@ spec:
     # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: admin@athlefi.com
+    email: admin@sparkfly.dev
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: athlefi-letsencrypt
@@ -25,7 +25,7 @@ spec:
       - dns01:
           # Use Cloudflare DNS challenge for wildcard certificates
           cloudflare:
-            email: admin@athlefi.com
+            email: kevin.olvera@dedsec.com.mx
             apiTokenSecretRef:
               name: cloudflare-api-token
               key: api-token
