@@ -76,8 +76,6 @@ spec:
               value: "Strict"
             - name: PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION
               value: "True"
-            - name: PGADMIN_CONFIG_LOGIN_BANNER
-              value: "AthleFi Database Administration"
           volumeMounts:
             - name: pgadmin-data
               mountPath: /var/lib/pgadmin
