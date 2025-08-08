@@ -9,4 +9,4 @@ metadata:
     app.kubernetes.io/part-of: athlefi
     app.kubernetes.io/managed-by: kustomize
 data:
-  PGADMIN_DEFAULT_EMAIL: admin@athlefi.local
+  PGADMIN_DEFAULT_EMAIL: admin@sparkfly.dev

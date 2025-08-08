@@ -14,6 +14,7 @@ database-tools/
 ├── base/                           # Configuración base
 │   ├── pgadmin-deployment.yaml     # Deployment de pgAdmin
 │   ├── pgadmin-service.yaml        # Service de pgAdmin
+│   ├── pgadmin-ingress.yaml        # Ingress para acceso externo
 │   ├── pgadmin-configmap.yaml      # ConfigMap para configuración
 │   ├── pgadmin-secret.yaml         # Secret para credenciales
 │   ├── pgadmin-servers-config.yaml # Configuración de servidores DB
@@ -94,7 +95,7 @@ Para acceso externo, agregar un Ingress en los overlays correspondientes.
 
 **⚠️ IMPORTANTE**: Cambiar estas credenciales en producción.
 
-- **Email**: `admin@athlefi.local`
+- **Email**: `admin@athlefi.com`
 - **Contraseña**: `admin123`
 
 ## Configuración de Servidores
@@ -153,4 +154,10 @@ kubectl describe pod -l app.kubernetes.io/name=pgadmin -n athlefi-dev
 pgAdmin requiere ejecutarse como root. Si hay errores de permisos:
 1. Verificar que `runAsUser: 0` esté configurado
 2. Verificar que `allowPrivilegeEscalation: true`
-3. Verificar que no hay políticas de seguridad restrictivas 
+3. Verificar que no hay políticas de seguridad restrictivas
+
+### Error de email inválido
+pgAdmin no acepta dominios reservados como `.local`. Usar dominios válidos como:
+- `admin@athlefi.com`
+- `admin@athlefi.org`
+- `admin@athlefi.net` 
