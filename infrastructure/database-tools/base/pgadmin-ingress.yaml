@@ -11,6 +11,10 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+    # Add session affinity for pgAdmin
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session.cookie.secure: "true"
+    traefik.ingress.kubernetes.io/session.cookie.samesite: "strict"
 spec:
   rules:
     - host: pgadmin-dev.athlefi.internal.mx-central-1.sparkfly.cloud

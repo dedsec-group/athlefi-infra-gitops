@@ -64,6 +64,20 @@ spec:
               value: "True"
             - name: PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED
               value: "False"
+            - name: PGADMIN_CONFIG_SESSION_EXPIRATION_TIME
+              value: "60"
+            - name: PGADMIN_CONFIG_SESSION_EXPIRATION_WARNING
+              value: "5"
+            - name: PGADMIN_CONFIG_SESSION_COOKIE_SECURE
+              value: "True"
+            - name: PGADMIN_CONFIG_SESSION_COOKIE_HTTPONLY
+              value: "True"
+            - name: PGADMIN_CONFIG_SESSION_COOKIE_SAMESITE
+              value: "Strict"
+            - name: PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION
+              value: "True"
+            - name: PGADMIN_CONFIG_LOGIN_BANNER
+              value: "AthleFi Database Administration"
           volumeMounts:
             - name: pgadmin-data
               mountPath: /var/lib/pgadmin

@@ -1,7 +1,7 @@
 resources:
   - pgadmin-deployment.yaml
   - pgadmin-service.yaml
+  - pgadmin-ingress.yaml
   - pgadmin-configmap.yaml
   - pgadmin-secret.yaml
   - pgadmin-servers-config.yaml
-  - pgadmin-ingress.yaml
