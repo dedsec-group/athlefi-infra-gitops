@@ -1,0 +1,6 @@
+namespace: cert-manager
+
+resources:
+  - ../../base
+# Use staging issuer for development to avoid rate limits
+# The staging issuer is already named correctly: athlefi-letsencrypt-staging
