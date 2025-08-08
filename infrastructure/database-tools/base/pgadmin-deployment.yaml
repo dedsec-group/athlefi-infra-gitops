@@ -60,6 +60,10 @@ spec:
                 secretKeyRef:
                   name: pgadmin-secret
                   key: PGADMIN_DEFAULT_PASSWORD
+            - name: PGADMIN_CONFIG_SERVER_MODE
+              value: "True"
+            - name: PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED
+              value: "False"
           volumeMounts:
             - name: pgadmin-data
               mountPath: /var/lib/pgadmin
