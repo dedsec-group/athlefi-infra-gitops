@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: pgadmin
     app.kubernetes.io/instance: database-tools
-    app.kubernetes.io/version: "8.5"
+    app.kubernetes.io/version: "9.6"
     app.kubernetes.io/component: database-admin
     app.kubernetes.io/part-of: athlefi
     app.kubernetes.io/managed-by: kustomize
@@ -20,7 +20,7 @@ spec:
       labels:
         app.kubernetes.io/name: pgadmin
         app.kubernetes.io/instance: database-tools
-        app.kubernetes.io/version: "8.5"
+        app.kubernetes.io/version: "9.6"
         app.kubernetes.io/component: database-admin
         app.kubernetes.io/part-of: athlefi
         app.kubernetes.io/managed-by: kustomize
@@ -60,6 +60,8 @@ spec:
                 secretKeyRef:
                   name: pgadmin-secret
                   key: PGADMIN_DEFAULT_PASSWORD
+            - name: PGADMIN_DISABLE_POSTFIX
+              value: "True"
             - name: PGADMIN_CONFIG_SERVER_MODE
               value: "True"
             - name: PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED
